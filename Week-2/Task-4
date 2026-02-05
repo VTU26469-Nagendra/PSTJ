@@ -1,0 +1,50 @@
+import java.util.*;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.stream.*;
+
+class Event {
+    String name;
+    LocalDate date;
+
+    Event(String name, String dateStr) {
+        this.name = name;
+        this.date = LocalDate.parse(dateStr);
+    }
+}
+
+public class Solution {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        List<Event> events = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            String[] parts = sc.nextLine().split(" ");
+            events.add(new Event(parts[0], parts[1]));
+        }
+
+        int month = sc.nextInt();
+
+        List<Event> sortedEvents = events.stream()
+                .sorted(Comparator.comparing(e -> e.date))
+                .collect(Collectors.toList());
+
+        String sortedNames = sortedEvents.stream()
+                .map(e -> e.name)
+                .collect(Collectors.joining(" "));
+        System.out.println(sortedNames);
+
+        System.out.println(sortedEvents.get(0).name);
+        System.out.println(sortedEvents.get(sortedEvents.size() - 1).name);
+
+        String eventsInMonth = events.stream()
+                .filter(e -> e.date.getMonthValue() == month)
+                .map(e -> e.name)
+                .collect(Collectors.joining(" "));
+        System.out.println(eventsInMonth);
+
+        sc.close();
+    }
+}

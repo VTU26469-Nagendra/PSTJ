@@ -12,14 +12,12 @@ class Result {
 
         for (int i = 0; i < arr.size(); i++) {
             int num = arr.get(i);
-
-            // Kadane's Algorithm (contiguous)
+           
             if (i > 0) {
                 currentMax = Math.max(num, currentMax + num);
                 maxSoFar = Math.max(maxSoFar, currentMax);
             }
 
-            // Non-contiguous subsequence
             if (num > 0) {
                 maxSubsequence += num;
             }
@@ -28,7 +26,6 @@ class Result {
             maxElement = Math.max(maxElement, num);
         }
 
-        // If all elements are negative
         if (maxSubsequence == 0) {
             maxSubsequence = maxElement;
         }

@@ -1,0 +1,77 @@
+import java.io.*;
+import java.util.*;
+
+class Result {
+
+    public static List<Integer> maxSubarray(List<Integer> arr) {
+        int maxSoFar = arr.get(0);
+        int currentMax = arr.get(0);
+
+        int maxSubsequence = 0;
+        int maxElement = arr.get(0);
+
+        for (int i = 0; i < arr.size(); i++) {
+            int num = arr.get(i);
+
+            // Kadane's Algorithm (contiguous)
+            if (i > 0) {
+                currentMax = Math.max(num, currentMax + num);
+                maxSoFar = Math.max(maxSoFar, currentMax);
+            }
+
+            // Non-contiguous subsequence
+            if (num > 0) {
+                maxSubsequence += num;
+            }
+
+            // Track maximum element
+            maxElement = Math.max(maxElement, num);
+        }
+
+        // If all elements are negative
+        if (maxSubsequence == 0) {
+            maxSubsequence = maxElement;
+        }
+
+        List<Integer> result = new ArrayList<>();
+        result.add(maxSoFar);
+        result.add(maxSubsequence);
+
+        return result;
+    }
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int t = Integer.parseInt(bufferedReader.readLine().trim());
+
+        for (int tItr = 0; tItr < t; tItr++) {
+            int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+            String[] arrTemp = bufferedReader.readLine().trim().split(" ");
+
+            List<Integer> arr = new ArrayList<>();
+
+            for (int i = 0; i < n; i++) {
+                arr.add(Integer.parseInt(arrTemp[i]));
+            }
+
+            List<Integer> result = Result.maxSubarray(arr);
+
+            for (int i = 0; i < result.size(); i++) {
+                bufferedWriter.write(String.valueOf(result.get(i)));
+                if (i != result.size() - 1) {
+                    bufferedWriter.write(" ");
+                }
+            }
+
+            bufferedWriter.newLine();
+        }
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
